@@ -29,7 +29,7 @@ namespace colletta
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(totale > 0 && raggiunto<=totale)
+            if(totale > 0 && raggiunto<=totale && totale!=null)
             {
                 parteci.Add(textBox1.Text, double.Parse(textBox2.Text));
                 raggiunto += parteci[textBox1.Text];
@@ -39,6 +39,13 @@ namespace colletta
                 {
                     MessageBox.Show("obiettivo raggiunto");
                 }
+            }
+            if(totale <= raggiunto)
+            {
+                MessageBox.Show("obiettivo gia raggiunto");
+            }
+            if (totale <= 0 && totale != null) {
+                MessageBox.Show("selezionarre un obiettivo");
             }
         }
 
