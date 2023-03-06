@@ -51,8 +51,20 @@ namespace colletta
 
         private void button2_Click(object sender, EventArgs e)
         {
+           if(textBox3.Text.All(char.IsDigit)) { 
+            if (double.Parse(textBox3.Text)>0 ) { 
             totale = double.Parse(textBox3.Text);
             label5.Text= totale.ToString();
+            }
+                else
+                {
+                    MessageBox.Show("inserisci valore > 0");
+                }
+            }
+            else
+            {
+                MessageBox.Show("inserisci valore valido");
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -100,6 +112,11 @@ namespace colletta
             {
                 MessageBox.Show("seleziona  un partecipante");
             }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
