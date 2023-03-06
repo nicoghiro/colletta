@@ -28,8 +28,19 @@ namespace colletta
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            if(totale > 0 && raggiunto<=totale && totale!=null)
+        {   
+            if(totale <= raggiunto)
+            {
+                MessageBox.Show("obiettivo gia raggiunto");
+            }
+            if (totale <= 0 && totale != null) {
+                MessageBox.Show("selezionarre un obiettivo");
+            }
+            if (parteci.ContainsKey(textBox1.Text))
+            {
+                MessageBox.Show("questa persona sta gia facendo parte della colletta");
+            }
+            if (totale > 0 && raggiunto <= totale && totale != null && !parteci.ContainsKey(textBox1.Text)) 
             {
                 parteci.Add(textBox1.Text, double.Parse(textBox2.Text));
                 raggiunto += parteci[textBox1.Text];
@@ -40,13 +51,7 @@ namespace colletta
                     MessageBox.Show("obiettivo raggiunto");
                 }
             }
-            if(totale <= raggiunto)
-            {
-                MessageBox.Show("obiettivo gia raggiunto");
-            }
-            if (totale <= 0 && totale != null) {
-                MessageBox.Show("selezionarre un obiettivo");
-            }
+           
         }
 
         private void button2_Click(object sender, EventArgs e)
