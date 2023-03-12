@@ -14,9 +14,10 @@ namespace colletta
 {
     public partial class Form1 : Form
     {
+        int id = 0;
        double totale = 0;
         double raggiunto = 0;
-        Dictionary<string, double> parteci =new Dictionary<string, double>();
+        Dictionary<Persona, Valuta> parteci =new Dictionary<Persona, Valuta>();
         public Form1()
         {
             InitializeComponent();
@@ -31,14 +32,17 @@ namespace colletta
         {
             if(totale > 0 && raggiunto<=totale && totale!=null)
             {
-                parteci.Add(textBox1.Text, double.Parse(textBox2.Text));
-                raggiunto += parteci[textBox1.Text];
-                comboBox1.Items.Add(textBox1.Text);
+                Persona temp = new Persona(Convert.ToString(id), "pa");
+                Valuta temp1 = new Valuta(Convert.ToString(id), Convert.ToDouble(textBox2.Text));
+                parteci.Add(temp, temp1);
+                raggiunto += parteci[temp].Valore;
+                comboBox1.Items.Add(new {Text=temp, Value=temp.Name});
                 label8.Text = Convert.ToString(raggiunto);
                 if (totale <= raggiunto)
                 {
                     MessageBox.Show("obiettivo raggiunto");
                 }
+                id++;
             }
             if(totale <= raggiunto)
             {
@@ -57,7 +61,14 @@ namespace colletta
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            textBox4.Text = Convert.ToString(parteci[comboBox1.Text]);
+            foreach(KeyValuePair<Persona,Valuta> pippo in parteci){
+                if(pippo.Key.Id == comboBox1.Text)
+                {
+                    textBox4.Text = Convert.ToString(pippo.Value.Valore);
+                }
+
+            }
+          
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)
@@ -69,16 +80,24 @@ namespace colletta
         {
             if (!string.IsNullOrEmpty(comboBox1.Text))
             {
-                double temp = parteci[comboBox1.Text];
-                parteci[comboBox1.Text] = double.Parse(textBox4.Text);
-                temp = parteci[comboBox1.Text] - temp;
-                raggiunto += temp;
-                label8.Text = Convert.ToString(raggiunto);
-                if (totale <= raggiunto)
+                foreach (KeyValuePair<Persona, Valuta> pippo in parteci)
                 {
-                    MessageBox.Show("obiettivo raggiunto");
+                    if (pippo.Key.Id == comboBox1.Text)
+                    { double temp = pippo.Value.Valore;
+                    pippo.Value.Valore= double.Parse(textBox4.Text);
+                    temp = pippo.Value.Valore - temp;
+                    raggiunto += temp;
+                    label8.Text = Convert.ToString(raggiunto);
+                    }
+                   
                 }
+                
             }
+            if (totale <= raggiunto)
+            {
+                MessageBox.Show("obiettivo raggiunto");
+            }
+        
             else
             {
                 MessageBox.Show("seleziona  un partecipante");
@@ -90,11 +109,21 @@ namespace colletta
         {
             if (!string.IsNullOrEmpty(comboBox1.Text))
             {
-                raggiunto -= parteci[comboBox1.Text];
-                comboBox1.Items.Remove(comboBox1.Text);
-                parteci.Remove(comboBox1.Text);
-                label8.Text = Convert.ToString(raggiunto);
-                comboBox1.Text = "";
+                foreach(KeyValuePair<Persona, Valuta> pippo in parteci)
+                {
+                    if (pippo.Key.Equals(comboBox1.SelectedItem)){
+                        raggiunto -= pippo.Value.Valore; 
+                        comboBox1.Items.Remove(comboBox1.SelectedItem);
+                        parteci.Remove(pippo.Key);
+                        label8.Text = Convert.ToString(raggiunto); 
+                        comboBox1.Text = "";
+                    }
+                }
+                
+               
+                
+                
+               
             }
             else
             {
