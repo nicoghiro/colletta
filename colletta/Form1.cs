@@ -34,20 +34,22 @@ namespace colletta
             {
                 MessageBox.Show("obiettivo gia raggiunto");
             }
-            if (totale <= 0 && totale != null) {
+            if (totale <= 0) {
                 MessageBox.Show("selezionarre un obiettivo");
             }
-            if (parteci.ContainsKey(textBox1.Text))
+            Persona temp2 = new Persona(Convert.ToString(id), textBox1.Text);
+            if (parteci.ContainsKey(temp2))
             {
                 MessageBox.Show("questa persona sta gia facendo parte della colletta");
             }
-            if (totale > 0 && raggiunto <= totale && totale != null && !parteci.ContainsKey(textBox1.Text)) 
+            if (totale > 0 && raggiunto <= totale && !parteci.ContainsKey(temp2)) 
             {
-                Persona temp = new Persona(Convert.ToString(id), "pa");
+                Persona temp = new Persona(Convert.ToString(id), textBox1.Text);
                 Valuta temp1 = new Valuta(Convert.ToString(id), Convert.ToDouble(textBox2.Text));
                 parteci.Add(temp, temp1);
                 raggiunto += parteci[temp].Valore;
-                comboBox1.Items.Add(new {Text=temp, Value=temp.Name});
+                comboBox1.Items.Add(temp);
+                
                 label8.Text = Convert.ToString(raggiunto);
                 if (totale <= raggiunto)
                 {
@@ -79,7 +81,7 @@ namespace colletta
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             foreach(KeyValuePair<Persona,Valuta> pippo in parteci){
-                if(pippo.Key.Id == comboBox1.Text)
+                if(pippo.Key.Name == comboBox1.Text)
                 {
                     textBox4.Text = Convert.ToString(pippo.Value.Valore);
                 }
@@ -99,7 +101,7 @@ namespace colletta
             {
                 foreach (KeyValuePair<Persona, Valuta> pippo in parteci)
                 {
-                    if (pippo.Key.Id == comboBox1.Text)
+                    if (pippo.Key.Name == comboBox1.Text)
                     { double temp = pippo.Value.Valore;
                     pippo.Value.Valore= double.Parse(textBox4.Text);
                     temp = pippo.Value.Valore - temp;
@@ -110,15 +112,13 @@ namespace colletta
                 }
                 
             }
+            
             if (totale <= raggiunto)
             {
                 MessageBox.Show("obiettivo raggiunto");
             }
         
-            else
-            {
-                MessageBox.Show("seleziona  un partecipante");
-            }
+            
 
         }
 
@@ -126,21 +126,22 @@ namespace colletta
         {
             if (!string.IsNullOrEmpty(comboBox1.Text))
             {
-                foreach(KeyValuePair<Persona, Valuta> pippo in parteci)
+                Persona temp=(Persona)comboBox1.SelectedItem;
+                if (parteci.ContainsKey(temp))
                 {
-                    if (pippo.Key.Equals(comboBox1.SelectedItem)){
-                        raggiunto -= pippo.Value.Valore; 
-                        comboBox1.Items.Remove(comboBox1.SelectedItem);
-                        parteci.Remove(pippo.Key);
-                        label8.Text = Convert.ToString(raggiunto); 
-                        comboBox1.Text = "";
-                    }
+
+
+                    raggiunto -= parteci[temp].Valore;
+                    comboBox1.Items.Remove(temp);
+                    parteci.Remove(temp);
+                    label8.Text = Convert.ToString(raggiunto);
+                    comboBox1.Text = "";
+                  
                 }
-                
-               
-                
-                
-               
+                else
+                {
+                    MessageBox.Show("elemento non esistente");
+                }
             }
             else
             {
@@ -149,6 +150,11 @@ namespace colletta
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged_1(object sender, EventArgs e)
         {
 
         }

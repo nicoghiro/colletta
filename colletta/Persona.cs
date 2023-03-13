@@ -17,6 +17,13 @@ namespace colletta
             Name = name;
           
         }
+        public override bool Equals(Object o)
+        {
+            if (!(o is Persona))
+                return false;
+
+            return Equals((Persona)o);
+        }
 
         public string Id
         {
@@ -34,9 +41,9 @@ namespace colletta
         }
         public override string ToString()
         {
-            return "{" + id + "}" + "{name}";
+            return name;
         }
-        public bool equals(Persona other)
+        public bool Equals(Persona other)
         {
             if(other == null)
             {
@@ -46,7 +53,7 @@ namespace colletta
             {
                 return true;
             }
-            return(this.id == other.id);
+            return id.Equals(other.id);
         }
     }
 }
