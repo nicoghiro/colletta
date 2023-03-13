@@ -21,6 +21,9 @@ namespace colletta
         public Form1()
         {
             InitializeComponent();
+            comboBox2.Text = "€";
+            comboBox3.Text = "€";
+            comboBox4.Text = "€";
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -45,11 +48,10 @@ namespace colletta
             if (totale > 0 && raggiunto <= totale && !parteci.ContainsKey(temp2)) 
             {
                 Persona temp = new Persona(Convert.ToString(id), textBox1.Text);
-                Valuta temp1 = new Valuta(Convert.ToString(id), Convert.ToDouble(textBox2.Text));
+                Valuta temp1 = new Valuta(Convert.ToString(id), Convert.ToDouble(textBox2.Text),comboBox2.Text);
                 parteci.Add(temp, temp1);
                 raggiunto += parteci[temp].Valore;
-                comboBox1.Items.Add(temp);
-                
+                comboBox1.Items.Add(temp);             
                 label8.Text = Convert.ToString(raggiunto);
                 if (totale <= raggiunto)
                 {
@@ -83,7 +85,12 @@ namespace colletta
             foreach(KeyValuePair<Persona,Valuta> pippo in parteci){
                 if(pippo.Key.Name == comboBox1.Text)
                 {
+                    if(comboBox3.Text=="€")
                     textBox4.Text = Convert.ToString(pippo.Value.Valore);
+                    if (comboBox3.Text == "$")
+                    textBox4.Text = Convert.ToString(pippo.Value.getDollaro());
+                    if (comboBox3.Text == "£")
+                    textBox4.Text = Convert.ToString(pippo.Value.getSterlina());
                 }
 
             }
@@ -102,11 +109,31 @@ namespace colletta
                 foreach (KeyValuePair<Persona, Valuta> pippo in parteci)
                 {
                     if (pippo.Key.Name == comboBox1.Text)
-                    { double temp = pippo.Value.Valore;
+                    {
+                        if(comboBox3.Text == "€") { 
+                    double temp = pippo.Value.Valore;
                     pippo.Value.Valore= double.Parse(textBox4.Text);
                     temp = pippo.Value.Valore - temp;
                     raggiunto += temp;
                     label8.Text = Convert.ToString(raggiunto);
+                     }
+                        if (comboBox3.Text == "$")
+                        {
+                            double temp = pippo.Value.Valore;
+                            pippo.Value.Valore=double.Parse(textBox4.Text)*0.93; 
+                            temp = pippo.Value.Valore - temp;
+                            raggiunto += temp;
+                            label8.Text = Convert.ToString(raggiunto);
+                        }
+                        if (comboBox3.Text == "£")
+                        {
+                            double temp = pippo.Value.Valore;
+                            pippo.Value.Valore=double.Parse(textBox4.Text)*1.13;
+                            temp = pippo.Value.Valore - temp;
+                            raggiunto += temp;
+                            label8.Text = Convert.ToString(raggiunto);
+                        }
+
                     }
                    
                 }
@@ -157,6 +184,23 @@ namespace colletta
         private void textBox2_TextChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (KeyValuePair<Persona, Valuta> pippo in parteci)
+            {
+                if (pippo.Key.Name == comboBox1.Text)
+                {
+                    if (comboBox3.Text == "€")
+                        textBox4.Text = Convert.ToString(pippo.Value.Valore);
+                    if (comboBox3.Text == "$")
+                        textBox4.Text = Convert.ToString(pippo.Value.getDollaro());
+                    if (comboBox3.Text == "£")
+                        textBox4.Text = Convert.ToString(pippo.Value.getSterlina());
+                }
+
+            }
         }
     }
 }
