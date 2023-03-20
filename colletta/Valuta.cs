@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace colletta
 {
-    public class Valuta
+    public class Valuta:IComparable<Valuta>
     {
         string id;
         double valore;
@@ -59,6 +59,10 @@ namespace colletta
         public void setDollaro(double Val)
         {
             valore = Val * 0.93;
+        }
+        public int CompareTo(Valuta val)
+        {
+            return valore.CompareTo(valore);
         }
     }
 }

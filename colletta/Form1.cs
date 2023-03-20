@@ -21,9 +21,10 @@ namespace colletta
         public Form1()
         {
             InitializeComponent();
+            textBox5.Hide();
             comboBox2.Text = "€";
             comboBox3.Text = "€";
-            comboBox4.Text = "€";
+           
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -200,6 +201,45 @@ namespace colletta
                         textBox4.Text = Convert.ToString(pippo.Value.getSterlina());
                 }
 
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            comboBox1.Items.Clear();
+            SortedDictionary<Persona, Valuta> pippo = new SortedDictionary<Persona, Valuta>(parteci);
+            parteci = new Dictionary<Persona, Valuta>(pippo);
+            foreach(KeyValuePair<Persona,Valuta> peppa in parteci)
+            {
+                comboBox1.Items.Add(peppa.Key);
+            }
+        
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            comboBox1.Items.Clear();
+            Dictionary<Persona, Valuta> pippo = new Dictionary<Persona, Valuta>(parteci);
+            parteci = pippo.OrderByDescending(x => x.Value.Valore).ToDictionary(x => x.Key, x => x.Value);
+            foreach (KeyValuePair<Persona, Valuta> peppa in parteci)
+            {
+                comboBox1.Items.Add(peppa.Key);
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            textBox5.Show();
+            if (!string.IsNullOrEmpty(textBox5.Text))
+            {
+                double numero = Convert.ToDouble(textBox5.Text);
+                foreach(KeyValuePair<Persona, Valuta> peppa in parteci)
+                {
+                    if (peppa.Value.Valore == numero)
+                    {
+                        MessageBox.Show("l'utente con questo importo è " + peppa.Key.Name);
+                    }
+                }
             }
         }
     }

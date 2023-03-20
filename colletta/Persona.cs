@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace colletta
 {
-    public class Persona
+    public class Persona : IComparable<Persona>
     {
         string id;
         string name;
@@ -54,6 +54,10 @@ namespace colletta
                 return true;
             }
             return id.Equals(other.id);
+        }
+        public int CompareTo(Persona per)
+        {
+            return Name.CompareTo(per.Name);
         }
     }
 }
